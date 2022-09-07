@@ -1,6 +1,10 @@
-interface SelectProps {
-  defaultValue: string;
-  options: string[];
+export interface OptionProps {
+  value: string;
+  label: string;
 }
 
-export type SelectModel = JSX.IntrinsicElements['div'] & SelectProps;
+export interface SelectModel {
+  defaultValue: OptionProps;
+  options: OptionProps[];
+  onChange(currentOption: OptionProps): any;
+}

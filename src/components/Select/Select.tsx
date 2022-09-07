@@ -1,9 +1,9 @@
-import { CaretDown, CaretUp } from 'phosphor-react';
 import React, { useEffect, useRef, useState } from 'react';
-import { SelectModel } from './Select.model';
+import { CaretDown, CaretUp } from 'phosphor-react';
+import { OptionProps, SelectModel } from './Select.model';
 
-const Select: React.FC<SelectModel> = ({ defaultValue, options }) => {
-  const [currentOption, setCurrentOption] = useState(defaultValue);
+const Select: React.FC<SelectModel> = ({ defaultValue, options, onChange }) => {
+  const [currentOption, setCurrentOption] = useState<OptionProps>(defaultValue);
   const [optionsIsVisible, setOptionsIsVisible] = useState(false);
 
   const ref = useRef<HTMLDivElement>(null);
@@ -22,13 +22,19 @@ const Select: React.FC<SelectModel> = ({ defaultValue, options }) => {
     };
   }, [ref]);
 
+  useEffect(() => {
+    onChange(currentOption);
+  }, [currentOption]);
+
   return (
     <div ref={ref} className='w-full relative'>
       <button
-        className='w-full relative flex items-center rounded bg-gray-200'
+        className={`w-full relative flex items-center transition rounded border border-gray-300 ${
+          optionsIsVisible ? 'bg-white border-gray-500' : 'bg-gray-200'
+        }`}
         onClick={() => setOptionsIsVisible((old) => !old)}
       >
-        <p className='p-2 text-lg'>{currentOption}</p>
+        <p className='p-2 text-lg'>{currentOption.label}</p>
         {optionsIsVisible ? (
           <CaretUp weight='bold' className='absolute text-lg right-3' />
         ) : (
@@ -39,14 +45,14 @@ const Select: React.FC<SelectModel> = ({ defaultValue, options }) => {
         <div className='absolute w-full flex flex-col items-start bg-white rounded border-2 border-gray-300 max-h-80 overflow-y-auto'>
           {options.map((option) => (
             <button
-              key={option}
-              className='w-full text-lg text-left py-1 px-2 hover:bg-gray-300'
+              key={option.value}
+              className='w-full text-lg text-left py-1 px-2 hover:bg-blue-100'
               onClick={() => {
                 setCurrentOption(option);
                 setOptionsIsVisible(false);
               }}
             >
-              {option}
+              {option.label}
             </button>
           ))}
         </div>
