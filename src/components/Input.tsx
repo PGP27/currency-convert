@@ -1,5 +1,5 @@
 import React from 'react';
-import { InputModel } from './Input.model';
+import { InputModel } from '~/model/Input.model';
 
 const Input: React.FC<InputModel> = ({ ...rest }) => {
   return (

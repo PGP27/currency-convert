@@ -1,4 +1,4 @@
-import { AppProvider } from './context/AppContext/AppContext';
+import { AppProvider } from './context/AppContext';
 import Home from './pages/Home';
 
 import './index.css';

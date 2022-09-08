@@ -1,15 +1,17 @@
-import { useApp } from '~/context/AppContext/AppContext';
-import Select from '~/components/Select/Select';
-import Input from '~/components/Input/Input';
-import { useState } from 'react';
-import { OptionProps } from '~/components/Select/Select.model';
+import { useEffect, useState } from 'react';
+import { useApp } from '~/context/AppContext';
+import Select from '~/components/Select';
+import Input from '~/components/Input';
+import { OptionModel } from '~/model/Option.model';
+import { CurrencyValueModel } from '~/model/AppContext.model';
+import { api } from '~/services';
 
 const Home = () => {
   const { currencies } = useApp();
 
   const [selectedCurrencies, setSelectedCurrency] = useState<{
-    first: OptionProps;
-    second: OptionProps;
+    first: OptionModel;
+    second: OptionModel;
   }>({
     first: {
       value: 'usd',
@@ -20,6 +22,22 @@ const Home = () => {
       label: 'Brazilian real',
     },
   });
+
+  const [valueConverted, setValueConverted] = useState<number>();
+
+  useEffect(() => {
+    convertCurrency({
+      origin: selectedCurrencies.first.value,
+      destiny: selectedCurrencies.second.value,
+      value: 1,
+    });
+  }, []);
+
+  const convertCurrency = async ({ origin, destiny, value }: CurrencyValueModel) => {
+    await api.get(`currencies/${origin}/${destiny}.json`).then((res) => {
+      setValueConverted(res.data[`${destiny}`] * value);
+    });
+  };
 
   return (
     <div className='h-screen w-screen flex items-center justify-center'>
@@ -38,7 +56,7 @@ const Home = () => {
               }))
             }
           />
-          <Input />
+          <Input defaultValue={1} />
         </div>
         <div>
           <Select
@@ -54,7 +72,7 @@ const Home = () => {
               }))
             }
           />
-          <Input />
+          <Input disabled value={valueConverted} />
         </div>
       </div>
     </div>

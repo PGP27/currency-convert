@@ -8,7 +8,6 @@ export interface CurrencyValueModel {
 
 export interface AppContextModel {
   currencies: string[];
-  // getCurrencyValue({ origin, destiny, value }: CurrencyValueModel): any;
 }
 
 export interface AppProviderModel {

@@ -1,9 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { CaretDown, CaretUp } from 'phosphor-react';
-import { OptionProps, SelectModel } from './Select.model';
+import { OptionModel } from '~/model/Option.model';
+import { SelectModel } from '~/model/Select.model';
 
 const Select: React.FC<SelectModel> = ({ defaultValue, options, onChange }) => {
-  const [currentOption, setCurrentOption] = useState<OptionProps>(defaultValue);
+  const [currentOption, setCurrentOption] = useState<OptionModel>(defaultValue);
   const [optionsIsVisible, setOptionsIsVisible] = useState(false);
 
   const ref = useRef<HTMLDivElement>(null);

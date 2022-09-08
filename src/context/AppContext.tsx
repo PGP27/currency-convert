@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
+import { AppContextModel, AppProviderModel } from '~/model/AppContext.model';
 import { api } from '~/services';
-import { AppContextModel, AppProviderModel } from './AppContext.model';
 
 const AppContext = createContext({} as AppContextModel);
 
