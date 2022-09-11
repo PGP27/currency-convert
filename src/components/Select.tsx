@@ -1,10 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { CaretDown, CaretUp } from 'phosphor-react';
-import { OptionProps, SelectModel } from './Select.model';
+import { CaretDown } from 'phosphor-react';
+import { OptionProps, SelectModel } from '../models/Select.model';
 
-const Select: React.FC<SelectModel> = ({ defaultValue, options, onChange }) => {
-  const [currentOption, setCurrentOption] = useState<OptionProps>(defaultValue);
+const Select: React.FC<SelectModel> = ({ value, options, onChange }) => {
+  const [currentOption, setCurrentOption] = useState<OptionProps>(value);
   const [optionsIsVisible, setOptionsIsVisible] = useState(false);
+
+  console.log(currentOption);
 
   const ref = useRef<HTMLDivElement>(null);
 
@@ -30,16 +32,15 @@ const Select: React.FC<SelectModel> = ({ defaultValue, options, onChange }) => {
     <div ref={ref} className='w-full relative'>
       <button
         className={`w-full relative flex items-center transition rounded border border-gray-300 ${
-          optionsIsVisible ? 'bg-white border-gray-500' : 'bg-gray-200'
+          optionsIsVisible ? 'bg-white border-gray-500' : 'bg-gray-100'
         }`}
         onClick={() => setOptionsIsVisible((old) => !old)}
       >
-        <p className='p-2 text-lg'>{currentOption.label}</p>
-        {optionsIsVisible ? (
-          <CaretUp weight='bold' className='absolute text-lg right-3' />
-        ) : (
-          <CaretDown weight='bold' className='absolute text-lg right-3' />
-        )}
+        <p className='p-2 text-lg'>{value.label || currentOption.label}</p>
+        <CaretDown
+          weight='bold'
+          className={`absolute text-lg right-3 transition ${optionsIsVisible ? '-rotate-180' : ''}`}
+        />
       </button>
       {optionsIsVisible && (
         <div className='absolute w-full flex flex-col items-start bg-white rounded border-2 border-gray-300 max-h-80 overflow-y-auto'>

@@ -3,8 +3,13 @@ export interface OptionProps {
   label: string;
 }
 
+export interface SelectedCurrencyProps {
+  from: OptionProps;
+  to: OptionProps;
+}
+
 export interface SelectModel {
-  defaultValue: OptionProps;
+  value: OptionProps;
   options: OptionProps[];
   onChange(currentOption: OptionProps): any;
 }
