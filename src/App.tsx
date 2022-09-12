@@ -1,11 +1,11 @@
 import { useEffect, useRef, useState } from 'react';
 import { api } from './services';
-import { Input, Select } from './components';
+import { Button, Input, Select } from './components';
 import { SelectedCurrencyProps } from './models';
 import './index.css';
-import Button from './components/Button';
 
 const App = () => {
+  const [loading, setLoading] = useState(false);
   const [currencies, setCurrencies] = useState([]);
   const [selectedCurrencies, setSelectedCurrencies] = useState<SelectedCurrencyProps>({
     from: {
@@ -17,7 +17,6 @@ const App = () => {
       label: 'Brazilian real',
     },
   });
-  console.log(selectedCurrencies);
 
   const [convertedValue, setConvertedValue] = useState<number>();
   const currencyRef = useRef({ value: '1' } as { value: string });
@@ -36,12 +35,14 @@ const App = () => {
   };
 
   const convertCurrency = async () => {
+    setLoading(true);
     const { from, to } = selectedCurrencies;
     await api
       .get(`currencies/${from.value}/${to.value}.json`)
       .then((res) =>
         setConvertedValue(res.data[`${to.value}`] * Number(currencyRef.current.value)),
       );
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -50,8 +51,9 @@ const App = () => {
   }, []);
 
   return (
-    <div className='h-screen w-screen flex items-center justify-center'>
-      <div className='flex items-center'>
+    <div className='h-screen w-screen flex items-center justify-center bg-gray-100'>
+      <div className='flex flex-col items-center p-20 border border-gray-500 rounded-lg bg-white'>
+        <h1 className='mb-12 text-3xl'>Currency Convert</h1>
         <div>
           <Select
             value={selectedCurrencies.from}
@@ -71,7 +73,9 @@ const App = () => {
             defaultValue='1'
           />
         </div>
-        <Button onClick={switchCurrencies}>Inverter</Button>
+        <Button className='my-4' onClick={switchCurrencies}>
+          Inverter
+        </Button>
         <div>
           <Select
             value={selectedCurrencies.to}
@@ -88,8 +92,17 @@ const App = () => {
           />
           <Input disabled value={convertedValue || ''} readOnly />
         </div>
+        <Button className='flex items-center justify-center mt-4' onClick={convertCurrency}>
+          {loading ? (
+            <>
+              <div className='h-4 w-4 mr-2 border-t-2 border-r-2 border-gray-700 rounded-full animate-spin' />
+              <p>Carregando</p>
+            </>
+          ) : (
+            'Converter'
+          )}
+        </Button>
       </div>
-      <Button onClick={convertCurrency}>Converter</Button>
     </div>
   );
 };

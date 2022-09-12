@@ -43,7 +43,7 @@ const Select: React.FC<SelectModel> = ({ value, options, onChange }) => {
         />
       </button>
       {optionsIsVisible && (
-        <div className='absolute w-full flex flex-col items-start bg-white rounded border-2 border-gray-300 max-h-80 overflow-y-auto'>
+        <div className='absolute w-full z-10 flex flex-col items-start bg-white rounded border-2 border-gray-300 max-h-72 overflow-y-auto'>
           {options.map((option) => (
             <button
               key={option.value}
