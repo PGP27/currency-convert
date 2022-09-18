@@ -3,6 +3,7 @@ import { api } from './services';
 import { Button, Input, Select } from './components';
 import { SelectedCurrencyProps } from './models';
 import './index.css';
+import { Coins } from 'phosphor-react';
 
 const App = () => {
   const [loading, setLoading] = useState(false);
@@ -52,9 +53,12 @@ const App = () => {
 
   return (
     <div className='h-screen w-screen flex items-center justify-center bg-gray-100'>
-      <div className='flex flex-col items-center p-20 border border-gray-500 rounded-lg bg-white'>
-        <h1 className='mb-12 text-3xl'>Currency Convert</h1>
-        <div>
+      <div className='xl:w-1/3 flex flex-col items-center p-20 shadow border border-gray-500 rounded-lg bg-white'>
+        <div className='flex items-center mb-12'>
+          <h1 className='text-3xl mr-4'>Currency Convert</h1>
+          <Coins fontSize={30} />
+        </div>
+        <div className='w-full'>
           <Select
             value={selectedCurrencies.from}
             options={Object.keys(currencies).map((cod, index) => ({
@@ -76,7 +80,7 @@ const App = () => {
         <Button className='my-4' onClick={switchCurrencies}>
           Inverter
         </Button>
-        <div>
+        <div className='w-full'>
           <Select
             value={selectedCurrencies.to}
             options={Object.keys(currencies).map((cod, index) => ({
